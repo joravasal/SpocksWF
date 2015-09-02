@@ -15,8 +15,8 @@ static int min1;
 static int hour10;
 static int hour1;
 
-static const int maxNumMiddleAnimation = 2;
-static int numMiddleAnimation = 2;
+static const int maxNumMiddleAnimation = 1;
+static int numMiddleAnimation;
 static int middleShape = 0;
 
 AppTimer *animation_timer; //for the animation
@@ -189,6 +189,7 @@ void handle_init(void) {
   window_stack_push(my_window, true);
   
   // Make sure the time is displayed from the start
+  numMiddleAnimation = maxNumMiddleAnimation;
   update_time();
   
   // Register with TickTimerService
