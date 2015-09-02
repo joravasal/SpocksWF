@@ -1,0 +1,23 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "joravasal@gmail.com",
+    "longName": "Spinning Clocks",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "Spocks",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "660f7a24-08fa-4f61-8551-40a2f632c041",
+    "versionLabel": "0.1",
+    "watchapp": {
+        "watchface": true
+    }
+}
