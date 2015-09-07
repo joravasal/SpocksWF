@@ -26,7 +26,7 @@ static int numMiddleAnimation = 1;
 static int middleShape = 0;
 
 AppTimer *animation_timer; //for the animation
-const int timer_delay = 25;
+const int timer_delay = 20;
 
 //Stores the angle of each spock in the screen (120).
 static GPoint spocks[SPOCKS_SCREEN_HEIGHT][SPOCKS_SCREEN_WIDTH];
@@ -78,9 +78,9 @@ static bool draw_array(GContext *ctx, int param_x_start, int param_y_start,
   if(param_x_start > 0 && param_x_start < SPOCKS_SCREEN_WIDTH) x_start = param_x_start;
   int y_start = 0;
   if(param_y_start > 0 && param_y_start < SPOCKS_SCREEN_HEIGHT) y_start = param_y_start;
-  int width = SPOCKS_SCREEN_WIDTH - x_start;
+  int width = SPOCKS_SCREEN_WIDTH;
   if(param_width > 0 && param_width + x_start <= SPOCKS_SCREEN_WIDTH) width = param_width + x_start;
-  int height = SPOCKS_SCREEN_HEIGHT - y_start;
+  int height = SPOCKS_SCREEN_HEIGHT;
   if(param_height > 0 && param_height + y_start <= SPOCKS_SCREEN_HEIGHT) height = param_height + y_start;
   
   bool modified = false;
@@ -192,6 +192,14 @@ static void bt_handler(bool connected) {
   }*/
 }
 
+static void batt_handler(BatteryChargeState charge) {
+  LOG("Battery state changed: %d%%", charge.charge_percent);
+  batt_level = charge.charge_percent / 10;
+  if(is_batt_shown) {
+    layer_mark_dirty(window_get_root_layer(my_window));
+  }
+}
+
 void animation_callback(void *data) {
   //LOG("Animation callback");
   layer_mark_dirty(window_get_root_layer(my_window));
@@ -241,16 +249,30 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
     
     //Updating the bluetooth status
     if(is_bt_shown) {
-      stop_animation = !draw_array(ctx, 0, 0, 1, 2, is_bt_connected ? BLUETOOTH2X1[1] : BLUETOOTH2X1[0], 2, 1) && stop_animation;
+      stop_animation = !draw_array(ctx, 0, 0, 1, 2, is_bt_connected ? BLUETOOTH2X1[1] : BLUETOOTH2X1[0], 1, 2) && stop_animation;
     } else {
       stop_animation = !draw_array(ctx, 0, 0, 1, 2, NULL, 0, 0) && stop_animation;
     }
     
     //Updating the battery level
     if(is_batt_shown) {
-      stop_animation = !draw_array(ctx, 0, 0, 1, -1, NULL, 0, 0) && stop_animation;
+      if(batt_level < 2) {
+        //First corner, if the battery is really low it has special ways to show it.
+        stop_animation = !draw_array(ctx, 0, SPOCKS_SCREEN_HEIGHT - 1, 1, 1, BATTERY1X1[batt_level], 1, 1) && stop_animation;
+      } else {
+        //If the battery is not too low, it's all the same from the bottom
+        for(int i = 1; i < batt_level; i++) {
+          stop_animation = !draw_array(ctx, 0, SPOCKS_SCREEN_HEIGHT - i, 1, 1, BATTERY1X1[2], 1, 1) && stop_animation;
+        }
+        //Ends in a corner at the battery level
+        stop_animation = !draw_array(ctx, 0, SPOCKS_SCREEN_HEIGHT - batt_level, 1, 1, BATTERY1X1[3], 1, 1) && stop_animation;
+      }
+      //Finally, the parts that are empty
+      for(int i = batt_level + 1; i <= 10; i++) {
+        stop_animation = !draw_array(ctx, 0, SPOCKS_SCREEN_HEIGHT - i, 1, 1, BATTERY1X1[4], 1, 1) && stop_animation;
+      }
     } else {
-      stop_animation = !draw_array(ctx, 0, 0, 1, -1, NULL, 0, 0) && stop_animation;
+      stop_animation = !draw_array(ctx, 0, 2, 1, -1, NULL, 0, 0) && stop_animation;
     }
     
   }
@@ -267,8 +289,10 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
 static void window_load(Window *window) {
   LOG("Window load");
   is_bt_shown = true; //grab from mem
-  is_batt_shown = false; //grab from mem
-  is_sec_shown = false; //grab from mem
+  is_bt_connected = bluetooth_connection_service_peek();
+  is_batt_shown = true; //grab from mem
+  batt_level = battery_state_service_peek().charge_percent / 10;
+  is_sec_shown = true; //grab from mem
   
   // Register with TickTimerService
   if(is_sec_shown) 
@@ -306,8 +330,9 @@ void handle_init(void) {
   init_centers_array();
   init_spocks_array();
   
-  //Subscribe to BluetoothConnectionService
+  //Subscribe to BluetoothConnectionService and BatteryStateService
   bluetooth_connection_service_subscribe(bt_handler);
+  battery_state_service_subscribe(batt_handler);
   
   // Make sure the time is displayed from the start
   numMiddleAnimation = maxNumMiddleAnimation;
@@ -316,6 +341,8 @@ void handle_init(void) {
 
 void handle_deinit(void) {
   LOG("DEINIT");
+  bluetooth_connection_service_unsubscribe();
+  battery_state_service_unsubscribe();
   window_destroy(my_window);
 }
 

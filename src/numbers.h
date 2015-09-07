@@ -93,16 +93,17 @@ GPoint BLUETOOTH2X1[2][2] = {
   {{225, 315}, {45,135}}, //Connected
 };
 
-GPoint BATTERY1X1[4][1] = {
-  {{90, 180}}, //starting corner
-  {{90, 270}}, //middle step
+GPoint BATTERY1X1[5][1] = {
+  {{270, 270}}, //0%
+  {{180, 270}}, //10%
+  {{90, 270}}, //starting corner & middle step
   {{180, 270}}, //end corner
   {{180, 180}}, //not reached
 };
 
 GPoint SECONDS1X1[4][1] = {
   {{0, 90}}, //starting corner
-  {{90, 270}}, //middle step
+  {{270, 90}}, //middle step
   {{0, 270}}, //end corner
   {{225, 315}}, //not reached
 };

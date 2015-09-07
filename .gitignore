@@ -3,3 +3,5 @@
 .directory
 Screenshots/
 BuildHistory/
+build/
+/.lock-waf_linux2_build
