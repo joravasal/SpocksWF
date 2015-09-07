@@ -1,0 +1,5 @@
+### Ignore some folders for local copies and unnecesary files
+
+.directory
+Screenshots/
+BuildHistory/
