@@ -103,7 +103,7 @@ GPoint BATTERY1X1[5][1] = {
 
 GPoint SECONDS1X1[4][1] = {
   {{0, 90}}, //starting corner
-  {{270, 90}}, //middle step
+  {{90, 270}}, //middle step
   {{0, 270}}, //end corner
   {{225, 315}}, //not reached
 };

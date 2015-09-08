@@ -10,7 +10,11 @@
 // The length of the hands of the clocks is quite independent from everything else
 //and can be modified freely, reducing to 5 creates a nice dashed effect, 
 //increasing will make the hands reach further with no effect on the numbers.
-#define LENGTH_HAND_SPOCK 7
+#define NORMAL_LENGTH_HAND_SPOCK 7
+#define SHORT_LENGTH_HAND_SPOCK 6
+#define VERY_SHORT_LENGTH_HAND_SPOCK 5
+#define TOO_SHORT_LENGTH_HAND_SPOCK 4
+#define LONG_LENGTH_HAND_SPOCK 9
 
 // The radius is quite important and it will define how many spocks fit on the screen,
 //by increasing it "resolution" for the numbers is lost so it is not really useful.

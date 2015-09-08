@@ -19,6 +19,8 @@ static bool is_bt_shown = false;
 static bool is_batt_shown = false;
 static bool is_sec_shown = false;
 
+static int hand_length = NORMAL_LENGTH_HAND_SPOCK;
+
 // This adds a number of steps every time the time changes.
 static const int maxNumMiddleAnimation = 1;
 static int numMiddleAnimation = 1;
@@ -26,7 +28,7 @@ static int numMiddleAnimation = 1;
 static int middleShape = 0;
 
 AppTimer *animation_timer; //for the animation
-const int timer_delay = 20;
+const int timer_delay = 15;
 
 //Stores the angle of each spock in the screen (120).
 static GPoint spocks[SPOCKS_SCREEN_HEIGHT][SPOCKS_SCREEN_WIDTH];
@@ -54,6 +56,42 @@ static void init_spocks_array() {
       spocks[i][j] = p;
     }
   }
+}
+
+static GPoint calculate_spocks_hands_direction(int i, int j, GPoint to) {
+  GPoint res = {0, 0};
+  if(to.x == -1) return res;
+  if((abs(spocks[i][j].x - to.x) + abs(spocks[i][j].y - to.y)) % 360 > (abs(spocks[i][j].x - to.y) + abs(spocks[i][j].y - to.x)) % 360) {
+    int aux = spocks[i][j].x;
+    spocks[i][j].x = spocks[i][j].y;
+    spocks[i][j].y = aux;
+  }
+  
+  if(spocks[i][j].x != to.x) {
+    if(spocks[i][j].x < to.x && spocks[i][j].x - to.x < 180) {
+      res.x = 1;
+    } else if(spocks[i][j].x < to.x) {
+      res.x = -1;
+    } else if(spocks[i][j].x - to.x < 180) {
+      res.x = -1;
+    } else {
+      res.x = 1;
+    }
+  }
+  
+  if(spocks[i][j].y != to.y) {
+    if(spocks[i][j].y < to.y && spocks[i][j].y - to.y < 180) {
+      res.y = 1;
+    } else if(spocks[i][j].y < to.y) {
+      res.y = -1;
+    } else if(spocks[i][j].y - to.y < 180) {
+      res.y = -1;
+    } else {
+      res.y = 1;
+    }
+  }
+  
+  return res;
 }
 
 // Draws the array of spocks from the initial at coordinates (param_x_start, param_y_start)
@@ -92,37 +130,35 @@ static bool draw_array(GContext *ctx, int param_x_start, int param_y_start,
       
       int32_t angle1 = spocks[i][j].x;
       int32_t angle2 = spocks[i][j].y;
+      
       if(array_objective != NULL) {
-        int obj_pos = ((i - y_start) % obj_height) * obj_width + ((j - x_start) % obj_width);
-        LOG("obj_pos=%d", obj_pos);
-        if(array_objective[obj_pos].x == -1) {
-          angle1 = (angle1 + ANGLE_STEP) % 360;
+        int objective_pos = ((i - y_start) % obj_height) * obj_width + ((j - x_start) % obj_width);
+        GPoint directions = calculate_spocks_hands_direction(i, j, array_objective[objective_pos]);
+      
+        if(directions.x != 0) {
+          if (angle1 == 0) angle1 = 360;
+          angle1 = (angle1 + (ANGLE_STEP * directions.x)) % 360;
           spocks[i][j].x = angle1;
-          angle2 = (angle2 + ANGLE_STEP) % 360;
-          spocks[i][j].y = angle2;
-        } else {
-          if (array_objective[obj_pos].x != angle1) {
-            angle1 = (angle1 + ANGLE_STEP) % 360;
-            spocks[i][j].x = angle1;
-            modified = true;
-          }
-          if (array_objective[obj_pos].y != angle2) {
-            angle2 = (angle2 + ANGLE_STEP) % 360;
+          modified = true;
+        }
+        if(directions.y != 0) {
+          if (angle2 == 0) angle2 = 360;
+          angle2 = (angle2 + (ANGLE_STEP * directions.y)) % 360;
             spocks[i][j].y = angle2;
             modified = true;
-          }
         }
       }
+      
       angle1 = TRIG_MAX_ANGLE * angle1 / 360;
       angle2 = TRIG_MAX_ANGLE * angle2 / 360;
       
       GPoint point1 = {
-        .x = (int16_t)(cos_lookup(angle1) * LENGTH_HAND_SPOCK / TRIG_MAX_RATIO) + center.x,
-        .y = (int16_t)(-sin_lookup(angle1) * LENGTH_HAND_SPOCK / TRIG_MAX_RATIO) + center.y,
+        .x = (int16_t)(cos_lookup(angle1) * hand_length / TRIG_MAX_RATIO) + center.x,
+        .y = (int16_t)(-sin_lookup(angle1) * hand_length / TRIG_MAX_RATIO) + center.y,
       };
       GPoint point2 = {
-        .x = (int16_t)(cos_lookup(angle2) * LENGTH_HAND_SPOCK / TRIG_MAX_RATIO) + center.x,
-        .y = (int16_t)(-sin_lookup(angle2) * LENGTH_HAND_SPOCK / TRIG_MAX_RATIO) + center.y,
+        .x = (int16_t)(cos_lookup(angle2) * hand_length / TRIG_MAX_RATIO) + center.x,
+        .y = (int16_t)(-sin_lookup(angle2) * hand_length / TRIG_MAX_RATIO) + center.y,
       };
       
       graphics_context_set_stroke_color(ctx, GColorBlack);
@@ -230,17 +266,21 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
     //Updating the seconds
     if(is_sec_shown) {
       //Corner at the beginning
-      stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 1, 1, 1, SECONDS1X1[0], 1, 1) && stop_animation;
+      stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 1, 1, 1,
+                                   SECONDS1X1[0], 1, 1) && stop_animation;
       for(int i = 1; i <= sec; i++) {
         //Loop for the middle steps
-        stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 1 - i, 1, 1, SECONDS1X1[1], 1, 1) && stop_animation;
+        stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 1 - i, 1, 1,
+                                     SECONDS1X1[1], 1, 1) && stop_animation;
       }
       if(sec < SPOCKS_SCREEN_HEIGHT - 1) {
         //Corner at the end
-        stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 2 - sec, 1, 1, SECONDS1X1[2], 1, 1) && stop_animation;
+        stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 2 - sec, 1, 1,
+                                     SECONDS1X1[2], 1, 1) && stop_animation;
         for(int i = sec + 2; i < SPOCKS_SCREEN_HEIGHT; i++) {
           //Loop for the rest
-          stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 1 - i, 1, 1, SECONDS1X1[3], 1, 1) && stop_animation;
+          stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, SPOCKS_SCREEN_HEIGHT - 1 - i, 1, 1,
+                                       SECONDS1X1[3], 1, 1) && stop_animation;
         }
       }
     } else {
