@@ -33,10 +33,17 @@
 #define SPOCKS_SCREEN_HEIGHT 12
 
 #define ANGLE_STEP 15
-  
+
+// Configuration options' values
 #define HIDE_BLUETOOTH 0
 #define SHOW_BLUETOOTH 1
 #define HIDE_BATTERY 0
 #define SHOW_BATTERY 1
 #define HIDE_SECONDS 0
 #define SHOW_SECONDS 1
+
+#define BACKGROUND_EQUAL 0
+#define BACKGROUND_DIFF_SIDE_BAR 1
+#define BACKGROUND_HOUR_MIN 2
+#define BACKGROUND_ALL_DIFF 3
+
