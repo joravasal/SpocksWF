@@ -47,7 +47,7 @@ static int numMiddleAnimation = 1;
 static int middleShape = 0;
 
 AppTimer *animation_timer; //for the animation
-const int timer_delay = 15;
+const int timer_delay = 30;
 
 //Stores the angle of each spock in the screen (120).
 static GPoint spocks[SPOCKS_SCREEN_HEIGHT][SPOCKS_SCREEN_WIDTH];
@@ -182,7 +182,19 @@ static bool draw_array(GContext *ctx, int param_x_start, int param_y_start,
         } else {
           objective_pos = ((i - y_start) % obj_height) * obj_width + ((j - x_start) % obj_width);
         }
-        GPoint directions = calculate_spocks_hands_direction(i, j, array_objective[objective_pos]);
+        
+        GPoint directions;
+        if(array_objective[objective_pos].x == -1) {
+          //If the objective doesn't care about some spock (value {-1,-1}), we use one of the shapes
+          //to make it look better.
+          //It's quite bad to have it hardcoded like this, if I ever get to use more complex shapes or
+          //make some structural changes into those, this will be affected most likely. As a fast
+          //solution it should be good enough for now.
+          objective_pos = (i % 2) * 2 + (j % 2);
+          directions = calculate_spocks_hands_direction(i, j, SHAPES2X2[middleShape][objective_pos]);
+        } else {
+          directions = calculate_spocks_hands_direction(i, j, array_objective[objective_pos]);
+        }
       
         if(directions.x != 0) {
           if (angle1 == 0) angle1 = 360;
@@ -262,7 +274,6 @@ static bool update_time() {
     }
   }
   
-  DEBUG("Time is %d%d:%d%d", hour10, hour1, min10, min1);
   return res;
 }
 
@@ -299,30 +310,30 @@ void animation_callback(void *data) {
 
 static void set_colors() {
   #ifdef PBL_COLOR
-  color_background_h10 = GColorMayGreen;
-  color_background_h1 = GColorBlack;//GColorDarkGreen;
-  color_background_m10 = GColorBlack;//GColorOxfordBlue;
-  color_background_m1 = GColorBlack;
-  color_background_sec = GColorBlack;
-  color_background_bt = GColorBlack;
+  color_background_h10 = GColorYellow;
+  color_background_h1 = GColorYellow;
+  color_background_m10 = GColorYellow;
+  color_background_m1 = GColorYellow;
+  color_background_sec = GColorDarkGreen;
+  color_background_bt = GColorDarkGreen;
   color_spocks_h10 = GColorBlack;
   color_spocks_h1 = GColorBlack;
-  color_spocks_m10 = GColorWhite;
-  color_spocks_m1 = GColorWhite;
+  color_spocks_m10 = GColorBlack;
+  color_spocks_m1 = GColorBlack;
   color_spocks_sec = GColorWhite;
   color_spocks_bt = GColorWhite;
   #else
   color_background_h10 = GColorBlack;
-  color_background_h1 = GColorBlack;
-  color_background_m10 = GColorBlack;
+  color_background_h1 = GColorWhite;
+  color_background_m10 = GColorWhite;
   color_background_m1 = GColorBlack;;
-  color_background_sec = GColorBlack;
+  color_background_sec = GColorWhite;
   color_background_bt = GColorBlack;
   color_spocks_h10 = GColorWhite;
   color_spocks_h1 = GColorWhite;
-  color_spocks_m10 = GColorWhite;
-  color_spocks_m1 = GColorWhite;
-  color_spocks_sec = GColorWhite;
+  color_spocks_m10 = GColorBlack;
+  color_spocks_m1 = GColorBlack;
+  color_spocks_sec = GColorBlack;
   color_spocks_bt = GColorWhite;
   #endif
 }
@@ -347,7 +358,7 @@ static void spock_layer_update_proc(Layer *layer, GContext *ctx) {
                                  SHAPES2X2[middleShape], true, 2, 2, color_spocks_m1) && stop_animation;
     ///// FIRST COLUMN:
     stop_animation = !draw_array(ctx, 0, 0, 1, -1, SHAPES2X2[middleShape], true,
-                                 2, 2, color_spocks_sec) && stop_animation;
+                                 2, 2, color_spocks_bt) && stop_animation;
     ///// LAST COLUMN:
     stop_animation = !draw_array(ctx, SPOCKS_SCREEN_WIDTH - 1, 0, 1, -1,
                                  SHAPES2X2[middleShape], true, 2, 2, color_spocks_sec) && stop_animation;
@@ -428,7 +439,9 @@ static void spock_layer_update_proc(Layer *layer, GContext *ctx) {
   if(!stop_animation || numMiddleAnimation > 0) {
     if (stop_animation) {
       numMiddleAnimation--;
-      middleShape = rand() % NUM_SHAPES;
+      if(numMiddleAnimation > 0) {
+        middleShape = rand() % NUM_SHAPES;
+      }
     }
     animation_timer = app_timer_register(timer_delay, (AppTimerCallback) animation_callback, NULL);
   }
@@ -444,11 +457,13 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
       
     case BACKGROUND_DIFF_SIDE_BAR:
       //Color for the BT and battery bar
+      // Needs an extra pixel somehow on the horizontal size.
       graphics_context_set_fill_color(ctx, color_background_bt);
-      graphics_fill_rect(ctx, GRect(0, 0, RADIUS_SPOCK*2 + W_OFFSET, PEBBLE_HEIGHT), 0, GCornerNone);
+      graphics_fill_rect(ctx, GRect(0, 0, RADIUS_SPOCK*2 + W_OFFSET + 1, PEBBLE_HEIGHT), 0, GCornerNone);
       //Color for the time
+      // Needs an extra pixel somehow on the horizontal start point.
       graphics_context_set_fill_color(ctx, color_background_h10);
-      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET, 0, 
+      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET + 1, 0, 
                                     RADIUS_SPOCK*2 * (SPOCKS_SCREEN_WIDTH - 2) + W_OFFSET, PEBBLE_HEIGHT), 0, GCornerNone);
       //Color for the seconds bar
       graphics_context_set_fill_color(ctx, color_background_sec);
@@ -458,16 +473,19 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
       
     case BACKGROUND_HOUR_MIN:
       //Color for the BT and battery bar
+      // Needs an extra pixel somehow on the horizontal size.
       graphics_context_set_fill_color(ctx, color_background_bt);
-      graphics_fill_rect(ctx, GRect(0, 0, RADIUS_SPOCK*2 + W_OFFSET, PEBBLE_HEIGHT), 0, GCornerNone);
+      graphics_fill_rect(ctx, GRect(0, 0, RADIUS_SPOCK*2 + W_OFFSET + 1, PEBBLE_HEIGHT), 0, GCornerNone);
       //Color for the hour
+      // Needs an extra pixel somehow on the horizontal start point.
       graphics_context_set_fill_color(ctx, color_background_h10);
-      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET, 0, 
+      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET + 1, 0, 
                                     RADIUS_SPOCK*2 * (SPOCKS_SCREEN_WIDTH - 2) + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT),
                          0, GCornerNone);
       //Color for the minutes
+      // Needs an extra pixel somehow on the horizontal start point.
       graphics_context_set_fill_color(ctx, color_background_m10);
-      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT, 
+      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET + 1, RADIUS_SPOCK*2 * NUMBER_HEIGHT, 
                                     RADIUS_SPOCK*2 * (SPOCKS_SCREEN_WIDTH - 2) + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT),
                          0, GCornerNone);
       //Color for the seconds bar
@@ -478,11 +496,13 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
       
     case BACKGROUND_ALL_DIFF:
       //Color for the BT and battery bar
+      // Needs an extra pixel somehow on the horizontal size.
       graphics_context_set_fill_color(ctx, color_background_bt);
-      graphics_fill_rect(ctx, GRect(0, 0, RADIUS_SPOCK*2 + W_OFFSET, PEBBLE_HEIGHT), 0, GCornerNone);
+      graphics_fill_rect(ctx, GRect(0, 0, RADIUS_SPOCK*2 + W_OFFSET + 1, PEBBLE_HEIGHT), 0, GCornerNone);
       //Color for the hour, first digit
+      // Needs an extra pixel somehow on the horizontal start point.
       graphics_context_set_fill_color(ctx, color_background_h10);
-      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET, 0, 
+      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET + 1, 0, 
                                     RADIUS_SPOCK*2 * NUMBER_WIDTH + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT),
                          0, GCornerNone);
       //Color for the hour, second digit
@@ -491,8 +511,9 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
                                     RADIUS_SPOCK*2 * NUMBER_WIDTH + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT),
                          0, GCornerNone);
       //Color for the minutes, first digit
+      // Needs an extra pixel somehow on the horizontal start point.
       graphics_context_set_fill_color(ctx, color_background_m10);
-      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT, 
+      graphics_fill_rect(ctx, GRect(RADIUS_SPOCK*2 + W_OFFSET + 1, RADIUS_SPOCK*2 * NUMBER_HEIGHT, 
                                     RADIUS_SPOCK*2 * NUMBER_WIDTH + W_OFFSET, RADIUS_SPOCK*2 * NUMBER_HEIGHT),
                          0, GCornerNone);
       //Color for the minutes, second digit
@@ -517,6 +538,8 @@ static void window_load(Window *window) {
   is_sec_shown = true; //grab from mem
   //grab from mem the colors
   set_colors();
+  
+  middleShape = rand() % NUM_SHAPES;
   
   // Register with TickTimerService
   if(is_sec_shown) 
