@@ -1,7 +1,37 @@
 {
-    "appKeys": {},
+    "appKeys": {
+      "KEY_HOUR_LEAD_ZERO": 0,
+      "KEY_VIBRATE_HOUR": 1,
+      "KEY_VIBRATE_BT_DISC": 2,
+      "KEY_VIBRATE_BT_CONN": 3,
+      "KEY_ALW_SHOW_BT": 4,
+      "KEY_ALW_SHOW_BATT": 5,
+      "KEY_ALW_SHOW_SEC": 6,
+      "KEY_SHAKE_SHOW_DATE": 7,
+      "KEY_SHAKE_SHOW_BT": 8,
+      "KEY_SHAKE_SHOW_BATT": 9,
+      "KEY_SHAKE_SHOW_SEC": 10,
+      "KEY_LENTGH_SHOW_DATE": 11,
+      "KEY_LENGTH_SHOW_BBS": 12,
+      "KEY_ANIMATION_RATE": 13,
+      "KEY_HAND_LENGTH": 14,
+      "KEY_COLOR_PATTERN": 15,
+      "KEY_COLOR_BG_H10": 16,
+      "KEY_COLOR_SPOCK_H10": 17,
+      "KEY_COLOR_BG_H1": 18,
+      "KEY_COLOR_SPOCK_H1": 19,
+      "KEY_COLOR_BG_M10": 20,
+      "KEY_COLOR_SPOCK_M10": 21,
+      "KEY_COLOR_BG_M1": 22,
+      "KEY_COLOR_SPOCK_M1": 23,
+      "KEY_COLOR_BG_SEC": 24,
+      "KEY_COLOR_SPOCK_SEC": 25,
+      "KEY_COLOR_BG_BT": 26,
+      "KEY_COLOR_SPOCK_BT": 27,
+      "KEY_DATE_FORMAT": 28
+    },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "joravasal@gmail.com",
     "longName": "Spinning Clocks",
@@ -16,7 +46,7 @@
         "basalt"
     ],
     "uuid": "660f7a24-08fa-4f61-8551-40a2f632c041",
-    "versionLabel": "0.1",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
     }

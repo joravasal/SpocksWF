@@ -3,6 +3,53 @@
 #include <pebble.h>
 #include "pebble-assist.h"
 
+//Configuration keys
+//behaviour options
+#define KEY_HOUR_LEAD_ZERO 0
+
+#define KEY_VIBRATE_HOUR 1
+#define KEY_VIBRATE_BT_DISC 2
+#define KEY_VIBRATE_BT_CONN 3
+
+#define KEY_ALW_SHOW_BT 4
+#define KEY_ALW_SHOW_BATT 5
+#define KEY_ALW_SHOW_SEC 6
+
+#define KEY_SHAKE_SHOW_DATE 7
+#define KEY_SHAKE_SHOW_BT 8
+#define KEY_SHAKE_SHOW_BATT 9
+#define KEY_SHAKE_SHOW_SEC 10
+
+#define KEY_LENTGH_SHOW_DATE 11
+#define KEY_LENGTH_SHOW_BBS 12
+
+#define KEY_ANIMATION_RATE 13
+
+//style options
+#define KEY_HAND_LENGTH 14
+
+#define KEY_COLOR_PATTERN 15
+
+#define KEY_COLOR_BG_H10 16
+#define KEY_COLOR_SPOCK_H10 17
+
+#define KEY_COLOR_BG_H1 18
+#define KEY_COLOR_SPOCK_H1 19
+
+#define KEY_COLOR_BG_M10 20
+#define KEY_COLOR_SPOCK_M10 21
+
+#define KEY_COLOR_BG_M1 22
+#define KEY_COLOR_SPOCK_M1 23
+
+#define KEY_COLOR_BG_SEC 24
+#define KEY_COLOR_SPOCK_SEC 25
+
+#define KEY_COLOR_BG_BT 26
+#define KEY_COLOR_SPOCK_BT 27
+
+#define KEY_DATE_FORMAT 28
+
 // Number of geometrical patterns for the middle animations
 #define NUM_SHAPES 8
 
@@ -41,24 +88,17 @@
 #define TOO_SHORT_LENGTH_HAND_SPOCK 4
 #define LONG_LENGTH_HAND_SPOCK 9
 
-#define HIDE_BLUETOOTH 0
-#define SHOW_BLUETOOTH 1
-#define HIDE_BATTERY 0
-#define SHOW_BATTERY 1
-#define HIDE_SECONDS 0
-#define SHOW_SECONDS 1
-
 #define BACKGROUND_EQUAL 0
 #define BACKGROUND_DIFF_SIDE_BAR 1
 #define BACKGROUND_HOUR_MIN 2
 #define BACKGROUND_ALL_DIFF 3
 
-#define ANIMATE_EVERY_1M 0
-#define ANIMATE_EVERY_10M 1
-#define ANIMATE_EVERY_15M 2
-#define ANIMATE_EVERY_30M 3
-#define ANIMATE_EVERY_1H 4
-#define ANIMATE_ONLY_FOR_DATE 5
+#define ANIMATE_ONLY_ON_SHAKE 0
+#define ANIMATE_EVERY_1M 1
+#define ANIMATE_EVERY_10M 2
+#define ANIMATE_EVERY_15M 3
+#define ANIMATE_EVERY_30M 4
+#define ANIMATE_EVERY_1H 5
 
 #define DATE_FORMAT_DD_MM 0
 #define DATE_FORMAT_MM_DD 1

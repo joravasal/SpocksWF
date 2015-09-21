@@ -5,3 +5,4 @@ Screenshots/
 BuildHistory/
 build/
 /.lock-waf_linux2_build
+/config/bower_components/

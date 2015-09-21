@@ -1,0 +1,19 @@
+{
+  "name": "Spocks-config",
+  "version": "0.0.0",
+  "homepage": "https://github.com/joravasal/SpocksWF",
+  "authors": [
+    "Jorge Avalos <joravasal@gmail.com>"
+  ],
+  "license": "GPL3",
+  "dependencies": {
+    "Slate": "pebble-slate#~0.0.3"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

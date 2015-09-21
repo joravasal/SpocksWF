@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Spocks watchface configuration</title>
+    <link rel='stylesheet' type='text/css' href='bower_components/Slate/dist/css/slate.min.css'>
+    <style TYPE="text/css">
+      <!-- 
+        .title {
+          padding: 0 10px;
+          text-transform: uppercase;
+          font-family: 'PT Sans', sans-serif;
+          font-size: 1.2em;
+          font-weight: 500;
+          color: #888888;
+          text-align: center;
+        }
+        .hidden {
+          display: none;
+        }
+      -->
+    </style>
+  </head>
+  
+  <body>
+    <div class='item-container'>
+      <h1 class='title'>Spocks Watchface<br>Configuration Page</h1>
+    </div>
+    
+    <div class='item-container'>
+      <div class='item-container-content'>
+        <div class='item'>
+          Use this configuration page to choose the settings you would like
+          applied to this watchface.
+        </div>
+      </div>
+    </div>
+    
+    <div class="item-container">
+      <div class="item-container-content">
+        <div class="item tab-buttons">
+          <a name="tab-title" class="tab-button active" id="tab_behaviour">Behavior</a>
+          <a name="tab-title" class="tab-button" id="tab_style">Style</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="item-container" id="behavior_tab_content">
+    
+      <div class="item-container-content">
+        <label class="item">
+          Date format
+          <select name="select-date-format" dir='rtl' class="item-select" id="date_format">
+            <option class="item-select-option" value="0" selected>dd/mm</option>
+            <option class="item-select-option" value="1">mm/dd</option>
+          </select>
+        </label>
+      </div>
+      
+      <div class="item-container-content">
+        <label class="item">
+          Show leading 0 on the hours
+          <input type="checkbox" class="item-checkbox" name="lead-zero" id="lead_zero">
+        </label>
+      </div>
+      
+      <div class='item-container-header'>Vibration settings</div>
+      <div class='item-container-content'>
+        <label class="item">
+          Every hour
+          <input type="checkbox" class="item-toggle" name="checkbox-vibration" id="vibration_hour">
+        </label>
+        <label class="item">
+          Bluetooth disconnection
+          <input type="checkbox" class="item-toggle" name="checkbox-vibration" id="vibration_bt_disc" checked>
+        </label>
+        <label class="item">
+          Bluetooth connection
+          <input type="checkbox" class="item-toggle" name="checkbox-vibration" id="vibration_bt_conn">
+        </label>
+      </div>
+      
+      <div class='item-container-header'>Elements always visible</div>
+      <div class='item-container-content'>
+        <label class="item">
+          Bluetooth status
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-always" id="alw_show_bt">
+        </label>
+        <label class="item">
+          Battery level
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-always" id="alw_show_batt">
+        </label>
+        <label class="item">
+          Seconds (it will waste the battery!!)
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-always" id="alw_show_sec">
+        </label>
+      </div>
+      
+      <div class='item-container-header'>On wrist shake show:</div>
+      <div class='item-container-content'>
+        <label class="item">
+          Date
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-onShake" id="shake_show_date" checked>
+        </label>
+        <label class="item">
+          Bluetooth status
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-onShake" id="shake_show_bt" checked>
+        </label>
+        <label class="item">
+          Battery level
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-onShake" id="shake_show_batt" checked>
+        </label>
+        <label class="item">
+          Seconds
+          <input type="checkbox" class="item-checkbox" name="checkbox-show-onShake" id="shake_show_sec" checked>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+        If the elements are always visible, selecting them here will have no effect. </br>
+        In order to show the date, shake the watch to the either side, to show the Bluetooth, battery
+        and/or seconds, shake towards the top or bottom of the screen.
+      </div>
+      <div class='item-container-content'>
+        <label class="item">
+          How long the date is shown (in seconds)
+          <div class="item">
+            <input type="range" class="item-slider" id="show_date_seconds" name="show_date_seconds" value="10" min="1" max="60">
+            <div class="item-input-wrapper item-slider-text">
+              <input type="text" class="item-input" name="show_date_seconds" id="show_date_seconds_textbox" value="10">
+            </div>
+          </div>
+        </label>
+        <label class="item">
+          How long the battery, bt and seconds are shown (in seconds)
+          <div class="item">
+            <input type="range" class="item-slider" id="show_sbb_seconds" name="show_sbb_seconds" value="30" min="1" max="60">
+            <div class="item-input-wrapper item-slider-text">
+              <input type="text" class="item-input" name="show_sbb_seconds" id="show_sbb_seconds_textbox" value="30">
+            </div>
+          </div>
+        </label>
+      </div>
+      
+      <div class='item-container-header'>Special animation</div>
+      <div class="item-container-content">
+        <label class="item">Show every:
+          <select name="select-animation-repeat" dir='rtl' class="item-select" id="animation_rate">
+            <option class="item-select-option" value="0">Wrist shake</option>
+            <option class="item-select-option" value="1">1 minute</option>
+            <option class="item-select-option" value="2">10 minutes</option>
+            <option class="item-select-option" value="3">15 minutes</option>
+            <option class="item-select-option" value="4" selected>30 minutes</option>
+            <option class="item-select-option" value="5">1 hour</option>
+          </select>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+        This animation will be shown on wrist shake in any case.
+      </div>
+      
+    </div>
+    
+    
+    <div class="item-container hidden" id="style_tab_content">
+    
+      <div class="item-container-content">
+        <label class="item">
+          Hand length
+          <select name="select-1" dir='rtl' class="item-select" id="hand_length">
+            <option class="item-select-option" value="4">Extremely short</option>
+            <option class="item-select-option" value="5">Quite short</option>
+            <option class="item-select-option" value="6">Short</option>
+            <option class="item-select-option" value="7" selected>Normal</option>
+            <option class="item-select-option" value="9">Long</option>
+          </select>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+        The shorter the value the emptier the screen, the numbers will be formed with a dashed style.
+        The longer option doesn't change the numbers but the lines will show out of places in other cases.
+        The normal size will make the lines reach to each other.
+      </div>
+      
+      <div class="item-container-content">
+        <label class="item">
+          Color pattern
+          <select name="select-1" dir='rtl' class="item-select" id="color_pattern">
+            <option class="item-select-option" value="0">Same BG everywhere</option>
+            <option class="item-select-option" value="1">Different BG on the sides</option>
+            <option class="item-select-option" value="2" selected>Sides, hours and minutes</option>
+            <option class="item-select-option" value="3">Each digit and sides</option>
+          </select>
+        </label>
+      </div>
+      
+      <div class='item-container-header'>Colors</div>
+      <div class="item-container-content hidden" id='colors_basalt'>
+        <label class="item pattern-0">
+          Full screen
+          <input type="text" class="item-color item-color-sunny" name="color-bg" id="color_background_h10" value="#000000">
+        </label>
+        <label class="item pattern-0">
+          Full screen spocks
+          <input type="text" class="item-color item-color-sunny" name="color-bg-spocks" id="color_spocks_h10" value="#FFFFFF">
+        </label>
+        
+        <label class="item pattern-1 pattern-2 pattern-3">
+          Left sidebar
+          <input type="text" class="item-color item-color-sunny" name="color-lsb-1" id="color_background_bt" value="#000000">
+        </label>
+        <label class="item pattern-1 pattern-2 pattern-3">
+          Left sidebar spocks
+          <input type="text" class="item-color item-color-sunny" name="color-lsb-1-spocks" id="color_spocks_bt" value="#FFFFFF">
+        </label>
+        <label class="item pattern-1 pattern-2 pattern-3">
+          Right sidebar
+          <input type="text" class="item-color item-color-sunny" name="color-rsb-1" id="color_background_sec" value="#000000">
+        </label>
+        <label class="item pattern-1 pattern-2 pattern-3">
+          Right sidebar spocks
+          <input type="text" class="item-color item-color-sunny" name="color-rsb-1-spocks" id="color_spocks_sec" value="#FFFFFF">
+        </label>
+        
+        <label class="item pattern-1">
+          Time
+          <input type="text" class="item-color item-color-sunny" name="color-time" id="color_background_h10" value="#000000">
+        </label>
+        <label class="item pattern-1">
+          Time spocks
+          <input type="text" class="item-color item-color-sunny" name="color-time-spocks" id="color_spocks_h10" value="#FFFFFF">
+        </label>
+        
+        <label class="item pattern-2">
+          Hour
+          <input type="text" class="item-color item-color-sunny" name="color-hour" id="color_background_h10" value="#000000">
+        </label>
+        <label class="item pattern-2">
+          Hour spocks
+          <input type="text" class="item-color item-color-sunny" name="color-hour-spocks" id="color_spocks_h10" value="#FFFFFF">
+        </label>
+        <label class="item pattern-2">
+          Minute
+          <input type="text" class="item-color item-color-sunny" name="color-minutes" id="color_background_m10" value="#000000">
+        </label>
+        <label class="item pattern-2">
+          Minute spocks
+          <input type="text" class="item-color item-color-sunny" name="color-minutes-spocks" id="color_spocks_m10" value="#FFFFFF">
+        </label>
+        
+        <label class="item pattern-3">
+          Hour (1st digit)
+          <input type="text" class="item-color item-color-sunny" name="color-hour-10" id="color_background_h10" value="#000000">
+        </label>
+        <label class="item pattern-3">
+          Hour (1st digit) spocks
+          <input type="text" class="item-color item-color-sunny" name="color-hour-10-spocks" id="color_spocks_h10" value="#FFFFFF">
+        </label>
+        <label class="item pattern-3">
+          Hour (2nd digit)
+          <input type="text" class="item-color item-color-sunny" name="color-hour-1" id="color_background_h1" value="#000000">
+        </label>
+        <label class="item pattern-3">
+          Hour (2nd digit) spocks
+          <input type="text" class="item-color item-color-sunny" name="color-hour-1-spocks" id="color_spocks_h1" value="#FFFFFF">
+        </label>
+        <label class="item pattern-3">
+          Minute (1st digit)
+          <input type="text" class="item-color item-color-sunny" name="color-minutes-10" id="color_background_m10" value="#000000">
+        </label>
+        <label class="item pattern-3">
+          Minute (1st digit) spocks
+          <input type="text" class="item-color item-color-sunny" name="color-minutes-10-spocks" id="color_spocks_m10" value="#FFFFFF">
+        </label>
+        <label class="item pattern-3">
+          Minute (2nd digit)
+          <input type="text" class="item-color item-color-sunny" name="color-minutes-1" id="color_background_m1" value="#000000">
+        </label>
+        <label class="item pattern-3">
+          Minute (2nd digit) spocks
+          <input type="text" class="item-color item-color-sunny" name="color-minutes-1-spocks" id="color_spocks_m1" value="#FFFFFF">
+        </label>
+      </div>
+      
+      <div class="item-container-content hidden" id='colors_aplite'>
+        <label class="item pattern-0">
+          Full screen
+          <select name="color-bg" dir='rtl' class="item-select" id="byw_background_h10">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        
+        <label class="item pattern-1 pattern-2 pattern-3">
+          Left sidebar
+          <select name="color-lsb" dir='rtl' class="item-select" id="byw_background_bt">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        <label class="item pattern-1 pattern-2 pattern-3">
+          Right sidebar
+          <select name="color-rsb" dir='rtl' class="item-select" id="byw_background_sec">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        
+        <label class="item pattern-1">
+          Time
+          <select name="color-time" dir='rtl' class="item-select" id="byw_background_h10">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        
+        <label class="item pattern-2">
+          Hour
+          <select name="color-hour" dir='rtl' class="item-select" id="byw_background_h10">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        <label class="item pattern-2">
+          Minute
+          <select name="color-minute" dir='rtl' class="item-select" id="byw_background_m10">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        
+        <label class="item pattern-3">
+          Hour (1st digit)
+          <select name="color-h10" dir='rtl' class="item-select" id="byw_background_h10">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        <label class="item pattern-3">
+          Hour (2nd digit)
+          <select name="color-h1" dir='rtl' class="item-select" id="byw_background_h1">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        <label class="item pattern-3">
+          Minute (1st digit)
+          <select name="color-m10" dir='rtl' class="item-select" id="byw_background_m10">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+        <label class="item pattern-3">
+          Minute (2nd digit)
+          <select name="color-m1" dir='rtl' class="item-select" id="byw_background_m1">
+            <option class="item-select-option">Black on white background</option>
+            <option class="item-select-option" selected>White on black background</option>
+          </select>
+        </label>
+      </div>
+    
+    </div>
+
+    <div class='item-container'>
+      <div class='button-container'>
+        <input id='submitButton' type='button' class='item-button' value='SUBMIT'>
+      </div>
+      <div class='item-container-footer'>
+        These settings only change on the watch after you click "SUBMIT".
+      </div>
+      <div class='button-container'>
+        <input id='cancelButton' type='button' class='item-button' value='CANCEL'>
+      </div>
+    </div>
+    
+    <script src='bower_components/Slate/dist/js/slate.min.js'></script>
+    <script src='main.js'></script>
+  </body>
+</html>

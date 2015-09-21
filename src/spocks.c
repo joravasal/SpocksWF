@@ -242,7 +242,7 @@ bool draw_date_numbers(GContext *ctx, int d10, int d1, int m10, int m1) {
   
   if (DATE_FORMAT_DD_MM == date_format && m10 == 0) {
     modified = draw_array(ctx, 1, NUMBER_HEIGHT, NUMBER_WIDTH, NUMBER_HEIGHT, SHAPES2X2[middle_shape], true,
-                          2, 2, color_spocks_h10) || modified;
+                          2, 2, color_spocks_m10) || modified;
   } else {
     modified = draw_array(ctx, 1, NUMBER_HEIGHT, NUMBER_WIDTH, NUMBER_HEIGHT,
                           NUMBERS[DATE_FORMAT_MM_DD == date_format ? d10 : m10],
