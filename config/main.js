@@ -103,27 +103,27 @@ function loadOptions() {
       
     } else if (watch_version <= 4 && watch_version >= 3) {
       $('#colors_basalt').find('#color_background_h10').each(function(index){
-        $(this)[0].value = localStorage.color_background_h10;
+        $(this).val(localStorage.color_background_h10);
       });
       $('#colors_basalt').find('#color_spocks_h10').each(function(index){
-        $(this)[0].value = localStorage.color_spocks_h10;
+        $(this).val(localStorage.color_spocks_h10);
       });
-      $('#color_background_h1')[0].value = localStorage.color_background_h1;
-      $('#color_spocks_h1')[0].value = localStorage.color_spocks_h1;
+      $('#color_background_h1').val(localStorage.color_background_h1);
+      $('#color_spocks_h1').val(localStorage.color_spocks_h1);
       
       $('#colors_basalt').find('#color_background_m10').each(function(index){
-        $(this)[0].value = localStorage.color_background_m10;
+        $(this).val(localStorage.color_background_m10);
       });
       $('#colors_basalt').find('#color_spocks_m10').each(function(index){
-        $(this)[0].value = localStorage.color_spocks_m10;
+        $(this).val(localStorage.color_spocks_m10);
       });
-      $('#color_background_m1')[0].value = localStorage.color_background_m1;
-      $('#color_spocks_m1')[0].value = localStorage.color_spocks_m1;
+      $('#color_background_m1').val(localStorage.color_background_m1);
+      $('#color_spocks_m1').val(localStorage.color_spocks_m1);
       
-      $('#color_background_bt')[0].value = localStorage.color_background_bt;
-      $('#color_spocks_bt')[0].value = localStorage.color_spocks_bt;
-      $('#color_background_sec')[0].value = localStorage.color_background_sec;
-      $('#color_spocks_sec')[0].value = localStorage.color_spocks_sec;
+      $('#color_background_bt').val(localStorage.color_background_bt);
+      $('#color_spocks_bt').val(localStorage.color_spocks_bt);
+      $('#color_background_sec').val(localStorage.color_background_sec);
+      $('#color_spocks_sec').val(localStorage.color_spocks_sec);
     }
   }
   changeColorsVisibility($('#color_pattern')[0].value);
@@ -182,7 +182,7 @@ function getAndStoreConfigData() {
     KEY_COLOR_BG_SEC: -1,
     KEY_COLOR_SPOCK_SEC: -1
   };
-
+  localStorage.date_format = options.KEY_DATE_FORMAT;
   localStorage.lead_zero = options.KEY_HOUR_LEAD_ZERO;
     
   localStorage.vibration_hour = options.KEY_VIBRATE_HOUR;
@@ -241,37 +241,37 @@ function getAndStoreConfigData() {
   } else if (watch_version <= 4 && watch_version >= 3) {
     var collection = $('#colors_basalt').find('.pattern-'+options.KEY_COLOR_PATTERN);
     
-    localStorage.color_background_h10 = collection.find('#color_background_h10').first()[0].value;
-    localStorage.color_spocks_h10 = collection.find('#color_spocks_h10').first()[0].value;
+    localStorage.color_background_h10 = collection.find('#color_background_h10').first().val();
+    localStorage.color_spocks_h10 = collection.find('#color_spocks_h10').first().val();
     options.KEY_COLOR_BG_H10 = parseInt(localStorage.color_background_h10, 16);
     options.KEY_COLOR_SPOCK_H10 = parseInt(localStorage.color_spocks_h10, 16);
     
-    localStorage.color_background_h1 = $('#color_background_h1')[0].value;
-    localStorage.color_spocks_h1 = $('#color_spocks_h1')[0].value;
+    localStorage.color_background_h1 = $('#color_background_h1').val();
+    localStorage.color_spocks_h1 = $('#color_spocks_h1').val();
     options.KEY_COLOR_BG_H1 = parseInt(localStorage.color_background_h1, 16);
     options.KEY_COLOR_SPOCK_H1 = parseInt(localStorage.color_spocks_h1, 16);
     
     if(options.KEY_COLOR_PATTERN >= 2) {
-      localStorage.color_background_m10 = collection.find('#color_background_m10').first()[0].value;
-      localStorage.color_spocks_m10 = collection.find('#color_spocks_m10').first()[0].value;
+      localStorage.color_background_m10 = collection.find('#color_background_m10').first().val();
+      localStorage.color_spocks_m10 = collection.find('#color_spocks_m10').first().val();
     } else {
-      localStorage.color_background_m10 = $('#color_background_m10')[0].value;
-      localStorage.color_spocks_m10 = $('#color_spocks_m10')[0].value;
+      localStorage.color_background_m10 = $('#color_background_m10').val();
+      localStorage.color_spocks_m10 = $('#color_spocks_m10').val();
     }
     options.KEY_COLOR_BG_M10 = parseInt(localStorage.color_background_m10, 16);
     options.KEY_COLOR_SPOCK_M10 = parseInt(localStorage.color_spocks_m10, 16);
     
-    localStorage.color_background_m1 = $('#color_background_m1')[0].value;
-    localStorage.color_spocks_m1 = $('#color_spocks_m1')[0].value;
+    localStorage.color_background_m1 = $('#color_background_m1').val();
+    localStorage.color_spocks_m1 = $('#color_spocks_m1').val();
     options.KEY_COLOR_BG_M1 = parseInt(localStorage.color_background_m1, 16);
     options.KEY_COLOR_SPOCK_M1 = parseInt(localStorage.color_spocks_m1, 16);
     
-    localStorage.color_background_bt = $('#color_background_bt')[0].value;
-    localStorage.color_spocks_bt = $('#color_spocks_bt')[0].value;
+    localStorage.color_background_bt = $('#color_background_bt').val();
+    localStorage.color_spocks_bt = $('#color_spocks_bt').val();
     options.KEY_COLOR_BG_BT = parseInt(localStorage.color_background_bt, 16);
     options.KEY_COLOR_SPOCK_BT = parseInt(localStorage.color_spocks_bt, 16);
-    localStorage.color_background_sec = $('#color_background_sec')[0].value;
-    localStorage.color_spocks_sec = $('#color_spocks_sec')[0].value;
+    localStorage.color_background_sec = $('#color_background_sec').val();
+    localStorage.color_spocks_sec = $('#color_spocks_sec').val();
     options.KEY_COLOR_BG_SEC = parseInt(localStorage.color_background_sec, 16);
     options.KEY_COLOR_SPOCK_SEC = parseInt(localStorage.color_spocks_sec, 16);
   }

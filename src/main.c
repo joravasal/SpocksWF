@@ -73,7 +73,7 @@ GColor color_spocks_sec;
 GColor color_spocks_bt;
 
 static AppTimer *animation_timer; //for the animation
-const int timer_delay = 120;
+const int timer_delay = 90;
 
 /**
  * Returns if the time change requires a redraw of the screen.
@@ -422,7 +422,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_BG_H10:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_BG_H10, -1);
         if(new_val != old_color) {
           color_background_h10 = GColorFromInt(new_val);
@@ -431,7 +431,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_SPOCK_H10:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_SPOCK_H10, -1);
         if(new_val != old_color) {
           color_spocks_h10 = GColorFromInt(new_val);
@@ -440,7 +440,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_BG_H1:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_BG_H1, -1);
         if(new_val != old_color) {
           color_background_h1 = GColorFromInt(new_val);
@@ -449,7 +449,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_SPOCK_H1:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_SPOCK_H1, -1);
         if(new_val != old_color) {
           color_spocks_h1 = GColorFromInt(new_val);
@@ -458,7 +458,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_BG_M10:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_BG_M10, -1);
         if(new_val != old_color) {
           color_background_m10 = GColorFromInt(new_val);
@@ -467,7 +467,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_SPOCK_M10:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_SPOCK_M10, -1);
         if(new_val != old_color) {
           color_spocks_m10 = GColorFromInt(new_val);
@@ -476,7 +476,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_BG_M1:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_BG_M1, -1);
         if(new_val != old_color) {
           color_background_m1 = GColorFromInt(new_val);
@@ -485,7 +485,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_SPOCK_M1:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_SPOCK_M1, -1);
         if(new_val != old_color) {
           color_spocks_m1 = GColorFromInt(new_val);
@@ -494,7 +494,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_BG_SEC:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_BG_SEC, -1);
         if(new_val != old_color) {
           color_background_sec = GColorFromInt(new_val);
@@ -503,7 +503,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_SPOCK_SEC:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_SPOCK_SEC, -1);
         if(new_val != old_color) {
           color_spocks_sec = GColorFromInt(new_val);
@@ -512,7 +512,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_BG_BT:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_BG_BT, -1);
         if(new_val != old_color) {
           color_background_bt = GColorFromInt(new_val);
@@ -521,7 +521,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
         break;
         
       case KEY_COLOR_SPOCK_BT:
-        new_val = t->value->int16;
+        new_val = t->value->int32;
         old_color = persist_read_int_safe(KEY_COLOR_SPOCK_BT, -1);
         if(new_val != old_color) {
           color_spocks_bt = GColorFromInt(new_val);
