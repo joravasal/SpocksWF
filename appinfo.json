@@ -37,7 +37,14 @@
     "longName": "Spinning Clocks",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/icon.png",
+                "menuIcon": true,
+                "name": "ICON",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "3",
     "shortName": "Spocks",

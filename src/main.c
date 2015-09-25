@@ -798,6 +798,7 @@ void handle_deinit(void) {
   LOG("DEINIT");
   bluetooth_connection_service_unsubscribe();
   battery_state_service_unsubscribe();
+  accel_tap_service_unsubscribe();
   window_destroy_safe(my_window);
 }
 
