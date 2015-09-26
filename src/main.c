@@ -183,13 +183,18 @@ static void shake_handler(AccelAxisType axis, int32_t direction) {
     } else {
       INFO("X<0");
     }
-    is_shake_x_active = true;
-    if(date_show_on_shake) {
-      middle_shape = rand() % NUM_SHAPES;
-      current_middle_animation = MAX_ANIMATIONS;
+    //If it was active, deactivate
+    if(is_shake_x_active) {
+      end_shake_x_timer(NULL);
+    } else {
+      is_shake_x_active = true;
+      if(date_show_on_shake) {
+        middle_shape = rand() % NUM_SHAPES;
+        current_middle_animation = MAX_ANIMATIONS;
+      }
+      layer_mark_dirty(window_get_root_layer(my_window));
+      shake_x_timer = app_timer_register(shake_date_timer_delay, end_shake_x_timer, NULL);
     }
-    layer_mark_dirty(window_get_root_layer(my_window));
-    shake_x_timer = app_timer_register(shake_date_timer_delay, end_shake_x_timer, NULL);
     break;
   case ACCEL_AXIS_Y:
     if (direction > 0) {
@@ -197,18 +202,23 @@ static void shake_handler(AccelAxisType axis, int32_t direction) {
     } else {
       INFO("Y<0");
     }
-    is_shake_y_active = true;
-    if(batt_show_on_shake) {
-      batt_level = battery_state_service_peek().charge_percent / 10;
+    //If it was active, deactivate
+    if(is_shake_y_active) {
+      end_shake_y_timer(NULL);
+    } else {
+      is_shake_y_active = true;
+      if(batt_show_on_shake) {
+        batt_level = battery_state_service_peek().charge_percent / 10;
+      }
+      if(bt_show_on_shake) {
+        is_bt_connected = bluetooth_connection_service_peek();
+      }
+      if(sec_show_on_shake) {
+        tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+      }
+      layer_mark_dirty(window_get_root_layer(my_window));
+      shake_y_timer = app_timer_register(shake_bbs_timer_delay, end_shake_y_timer, NULL);
     }
-    if(bt_show_on_shake) {
-      is_bt_connected = bluetooth_connection_service_peek();
-    }
-    if(sec_show_on_shake) {
-      tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
-    }
-    layer_mark_dirty(window_get_root_layer(my_window));
-    shake_y_timer = app_timer_register(shake_bbs_timer_delay, end_shake_y_timer, NULL);
     break;
   case ACCEL_AXIS_Z:
     if (direction > 0) {
