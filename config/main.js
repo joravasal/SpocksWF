@@ -11,7 +11,7 @@ function uiHandlers() {
   $('#submitButton').on('click', function() {
     console.log('Submit');
 
-    document.location = return_to + encodeURIComponent(JSON.stringify(getAndStoreConfigData()));
+    document.location = return_to + encodeURIComponent(JSON.stringify(getConfigData()));
   });
   
   $('#cancelButton').on('click', function() {
@@ -58,72 +58,74 @@ function loadOptions() {
     $('#colors_basalt').removeClass('hidden');
   }
   
-  if (localStorage.lead_zero) {
+  var stored_settings = getQueryParam('config_settings', null);
+  if (stored_settings) {
+    stored_settings = JSON.parse(decodeURIComponent(stored_settings));
     //Settings for the behaviour
-    $('#date_format')[0].value = localStorage.date_format;
-    $('#lead_zero')[0].checked = localStorage.lead_zero == 1;
+    $('#date_format')[0].value = stored_settings.KEY_DATE_FORMAT;
+    $('#lead_zero')[0].checked = stored_settings.KEY_HOUR_LEAD_ZERO == 1;
     
-    $('#vibration_hour')[0].checked = localStorage.vibration_hour == 1;
-    $('#vibration_bt_disc')[0].checked = localStorage.vibration_bt_disc == 1;
-    $('#vibration_bt_conn')[0].checked = localStorage.vibration_bt_conn == 1;
+    $('#vibration_hour')[0].checked = stored_settings.KEY_VIBRATE_HOUR == 1;
+    $('#vibration_bt_disc')[0].checked = stored_settings.KEY_VIBRATE_BT_DISC == 1;
+    $('#vibration_bt_conn')[0].checked = stored_settings.KEY_VIBRATE_BT_CONN == 1;
     
-    $('#alw_show_bt')[0].checked = localStorage.alw_show_bt == 1;
-    $('#alw_show_batt')[0].checked = localStorage.alw_show_batt == 1;
-    $('#alw_show_sec')[0].checked = localStorage.alw_show_sec == 1;
+    $('#alw_show_bt')[0].checked = stored_settings.KEY_ALW_SHOW_BT == 1;
+    $('#alw_show_batt')[0].checked = stored_settings.KEY_ALW_SHOW_BATT == 1;
+    $('#alw_show_sec')[0].checked = stored_settings.KEY_ALW_SHOW_SEC == 1;
     
-    $('#shake_show_date')[0].checked = localStorage.shake_show_date == 1;
-    $('#shake_show_bt')[0].checked = localStorage.shake_show_bt == 1;
-    $('#shake_show_batt')[0].checked = localStorage.shake_show_batt == 1;
-    $('#shake_show_sec')[0].checked = localStorage.shake_show_sec == 1;
+    $('#shake_show_date')[0].checked = stored_settings.KEY_SHAKE_SHOW_DATE == 1;
+    $('#shake_show_bt')[0].checked = stored_settings.KEY_SHAKE_SHOW_BT == 1;
+    $('#shake_show_batt')[0].checked = stored_settings.KEY_SHAKE_SHOW_BATT == 1;
+    $('#shake_show_sec')[0].checked = stored_settings.KEY_SHAKE_SHOW_SEC == 1;
     
-    $('#show_date_seconds')[0].value = localStorage.show_date_seconds;
-    $('#show_date_seconds_textbox')[0].value = localStorage.show_date_seconds;
-    $('#show_sbb_seconds')[0].value = localStorage.show_sbb_seconds;
-    $('#show_sbb_seconds_textbox')[0].value = localStorage.show_sbb_seconds;
+    $('#show_date_seconds')[0].value = stored_settings.KEY_LENTGH_SHOW_DATE;
+    $('#show_date_seconds_textbox')[0].value = stored_settings.KEY_LENTGH_SHOW_DATE;
+    $('#show_sbb_seconds')[0].value = stored_settings.KEY_LENGTH_SHOW_BBS;
+    $('#show_sbb_seconds_textbox')[0].value = stored_settings.KEY_LENGTH_SHOW_BBS;
     
-    $('#animation_rate')[0].value = localStorage.animation_rate;
+    $('#animation_rate')[0].value = stored_settings.KEY_ANIMATION_RATE;
     
     //Settings for the style
-    $('#hand_length')[0].value = localStorage.hand_length;
+    $('#hand_length')[0].value = stored_settings.KEY_HAND_LENGTH;
     
-    $('#color_pattern')[0].value = localStorage.color_pattern;
+    $('#color_pattern')[0].value = stored_settings.KEY_COLOR_PATTERN;
     if(watch_version <= 2 && watch_version > 0) {
       $('#colors_aplite').find('#byw_background_h10').each(function(index){
-        $(this)[0].value = localStorage.byw_h10;
+        $(this)[0].value = stored_settings.KEY_COLOR_BG_H10 === "000000" ? 1 : 0;
       });
-      $('#byw_background_h1')[0].value = localStorage.byw_h1;
+      $('#byw_background_h1')[0].value = stored_settings.KEY_COLOR_BG_H1 === "000000" ? 1 : 0;
       
       $('#colors_aplite').find('#byw_background_m10').each(function(index){
-        $(this)[0].value = localStorage.byw_m10;
+        $(this)[0].value = stored_settings.KEY_COLOR_BG_M10 === "000000" ? 1 : 0;
       });
-      $('#byw_background_m1')[0].value = localStorage.byw_m1;
+      $('#byw_background_m1')[0].value = stored_settings.KEY_COLOR_BG_M1 === "000000" ? 1 : 0;
       
-      $('#byw_background_bt')[0].value = localStorage.byw_bt;
-      $('#byw_background_sec')[0].value = localStorage.byw_sec;
+      $('#byw_background_bt')[0].value = stored_settings.KEY_COLOR_BG_BT === "000000" ? 1 : 0;
+      $('#byw_background_sec')[0].value = stored_settings.KEY_COLOR_BG_SEC === "000000" ? 1 : 0;
       
     } else if (watch_version <= 4 && watch_version >= 3) {
       $('#colors_basalt').find('#color_background_h10').each(function(index){
-        $(this).val(localStorage.color_background_h10);
+        $(this).val(stored_settings.KEY_COLOR_BG_H10);
       });
       $('#colors_basalt').find('#color_spocks_h10').each(function(index){
-        $(this).val(localStorage.color_spocks_h10);
+        $(this).val(stored_settings.KEY_COLOR_SPOCK_H10);
       });
-      $('#color_background_h1').val(localStorage.color_background_h1);
-      $('#color_spocks_h1').val(localStorage.color_spocks_h1);
+      $('#color_background_h1').val(stored_settings.KEY_COLOR_BG_H1);
+      $('#color_spocks_h1').val(stored_settings.KEY_COLOR_SPOCK_H1);
       
       $('#colors_basalt').find('#color_background_m10').each(function(index){
-        $(this).val(localStorage.color_background_m10);
+        $(this).val(stored_settings.KEY_COLOR_BG_M10);
       });
       $('#colors_basalt').find('#color_spocks_m10').each(function(index){
-        $(this).val(localStorage.color_spocks_m10);
+        $(this).val(stored_settings.KEY_COLOR_SPOCK_M10);
       });
-      $('#color_background_m1').val(localStorage.color_background_m1);
-      $('#color_spocks_m1').val(localStorage.color_spocks_m1);
+      $('#color_background_m1').val(stored_settings.KEY_COLOR_BG_M1);
+      $('#color_spocks_m1').val(stored_settings.KEY_COLOR_SPOCK_M1);
       
-      $('#color_background_bt').val(localStorage.color_background_bt);
-      $('#color_spocks_bt').val(localStorage.color_spocks_bt);
-      $('#color_background_sec').val(localStorage.color_background_sec);
-      $('#color_spocks_sec').val(localStorage.color_spocks_sec);
+      $('#color_background_bt').val(stored_settings.KEY_COLOR_BG_BT);
+      $('#color_spocks_bt').val(stored_settings.KEY_COLOR_SPOCK_BT);
+      $('#color_background_sec').val(stored_settings.KEY_COLOR_BG_SEC);
+      $('#color_spocks_sec').val(stored_settings.KEY_COLOR_SPOCK_SEC);
     }
   }
   changeColorsVisibility($('#color_pattern')[0].value);
@@ -144,7 +146,7 @@ function changeColorsVisibility(pattern) {
   });
 }
 
-function getAndStoreConfigData() {
+function getConfigData() {
   var options = {
     KEY_DATE_FORMAT: parseInt($('#date_format')[0].value, 10),
     KEY_HOUR_LEAD_ZERO: $('#lead_zero')[0].checked === true ? 1 : 0,
@@ -182,98 +184,65 @@ function getAndStoreConfigData() {
     KEY_COLOR_BG_SEC: -1,
     KEY_COLOR_SPOCK_SEC: -1
   };
-  localStorage.date_format = options.KEY_DATE_FORMAT;
-  localStorage.lead_zero = options.KEY_HOUR_LEAD_ZERO;
-    
-  localStorage.vibration_hour = options.KEY_VIBRATE_HOUR;
-  localStorage.vibration_bt_disc = options.KEY_VIBRATE_BT_DISC;
-  localStorage.vibration_bt_conn = options.KEY_VIBRATE_BT_CONN;
-  
-  localStorage.alw_show_bt = options.KEY_ALW_SHOW_BT;
-  localStorage.alw_show_batt = options.KEY_ALW_SHOW_BATT;
-  localStorage.alw_show_sec = options.KEY_ALW_SHOW_SEC;
-  
-  localStorage.shake_show_date = options.KEY_SHAKE_SHOW_DATE;
-  localStorage.shake_show_bt = options.KEY_SHAKE_SHOW_BT;
-  localStorage.shake_show_batt = options.KEY_SHAKE_SHOW_BATT;
-  localStorage.shake_show_sec = options.KEY_SHAKE_SHOW_SEC;
-  
-  localStorage.show_date_seconds = options.KEY_LENTGH_SHOW_DATE;
-  localStorage.show_sbb_seconds = options.KEY_LENGTH_SHOW_BBS;
-  
-  localStorage.animation_rate = options.KEY_ANIMATION_RATE;
-  
-  localStorage.hand_length = options.KEY_HAND_LENGTH;
-  localStorage.color_pattern = options.KEY_COLOR_PATTERN;
   
   if(watch_version <= 2 && watch_version > 0) {
     var collection = $('#colors_aplite').find('.pattern-'+options.KEY_COLOR_PATTERN);
-    var black = parseInt('000000', 16);
-    var white = parseInt('FFFFFF', 16);
+    var black = '000000';
+    var white = 'FFFFFF';
+    var val;
     
-    localStorage.byw_h10 = collection.find('#byw_background_h10').first()[0].value;
-    options.KEY_COLOR_BG_H10 = localStorage.byw_h10 == 0 ? white : black;
-    options.KEY_COLOR_SPOCK_H10 = localStorage.byw_h10 == 0 ? black : white;
+    val = collection.find('#byw_background_h10').first()[0].value;
+    options.KEY_COLOR_BG_H10 = val == 0 ? white : black;
+    options.KEY_COLOR_SPOCK_H10 = val == 0 ? black : white;
     
-    localStorage.byw_h1 = $('#byw_background_h1')[0].value;
-    options.KEY_COLOR_BG_H1 = localStorage.byw_h1 == 0 ? white : black;
-    options.KEY_COLOR_SPOCK_H1 = localStorage.byw_h1 == 0 ? black : white;
+    val = $('#byw_background_h1')[0].value;
+    options.KEY_COLOR_BG_H1 = val == 0 ? white : black;
+    options.KEY_COLOR_SPOCK_H1 = val == 0 ? black : white;
     
     if(options.KEY_COLOR_PATTERN >= 2) {
-      localStorage.byw_m10 = collection.find('#byw_background_m10').first()[0].value;
+      val = collection.find('#byw_background_m10').first()[0].value;
     } else {
-      localStorage.byw_m10 = $('#byw_background_m10')[0].value;
+      val = $('#byw_background_m10')[0].value;
     }
-    options.KEY_COLOR_BG_M10 = localStorage.byw_m10 == 0 ? white : black;
-    options.KEY_COLOR_SPOCK_M10 = localStorage.byw_m10 == 0 ? black : white;
+    options.KEY_COLOR_BG_M10 = val == 0 ? white : black;
+    options.KEY_COLOR_SPOCK_M10 = val == 0 ? black : white;
     
-    localStorage.byw_m1 = $('#byw_background_m1')[0].value;
-    options.KEY_COLOR_BG_M1 = localStorage.byw_m1 == 0 ? white : black;
-    options.KEY_COLOR_SPOCK_M1 = localStorage.byw_m1 == 0 ? black : white;
+    val = $('#byw_background_m1')[0].value;
+    options.KEY_COLOR_BG_M1 = val == 0 ? white : black;
+    options.KEY_COLOR_SPOCK_M1 = val == 0 ? black : white;
     
-    localStorage.byw_bt = $('#byw_background_bt')[0].value;
-    options.KEY_COLOR_BG_BT = localStorage.byw_bt == 0 ? white : black;
-    options.KEY_COLOR_SPOCK_BT = localStorage.byw_bt == 0 ? black : white;
+    val = $('#byw_background_bt')[0].value;
+    options.KEY_COLOR_BG_BT = val == 0 ? white : black;
+    options.KEY_COLOR_SPOCK_BT = val == 0 ? black : white;
     
-    localStorage.byw_sec = $('#byw_background_sec')[0].value;
-    options.KEY_COLOR_BG_SEC = localStorage.byw_sec == 0 ? white : black;
-    options.KEY_COLOR_SPOCK_SEC = localStorage.byw_sec == 0 ? black : white;
+    val = $('#byw_background_sec')[0].value;
+    options.KEY_COLOR_BG_SEC = val == 0 ? white : black;
+    options.KEY_COLOR_SPOCK_SEC = val == 0 ? black : white;
   } else if (watch_version <= 4 && watch_version >= 3) {
     var collection = $('#colors_basalt').find('.pattern-'+options.KEY_COLOR_PATTERN);
     
-    localStorage.color_background_h10 = collection.find('#color_background_h10').first().val();
-    localStorage.color_spocks_h10 = collection.find('#color_spocks_h10').first().val();
-    options.KEY_COLOR_BG_H10 = parseInt(localStorage.color_background_h10, 16);
-    options.KEY_COLOR_SPOCK_H10 = parseInt(localStorage.color_spocks_h10, 16);
+    options.KEY_COLOR_BG_H10 = collection.find('#color_background_h10').first().val();
+    options.KEY_COLOR_SPOCK_H10 = collection.find('#color_spocks_h10').first().val();
     
-    localStorage.color_background_h1 = $('#color_background_h1').val();
-    localStorage.color_spocks_h1 = $('#color_spocks_h1').val();
-    options.KEY_COLOR_BG_H1 = parseInt(localStorage.color_background_h1, 16);
-    options.KEY_COLOR_SPOCK_H1 = parseInt(localStorage.color_spocks_h1, 16);
+    options.KEY_COLOR_BG_H1 = $('#color_background_h1').val();
+    options.KEY_COLOR_SPOCK_H1 = $('#color_spocks_h1').val();
     
     if(options.KEY_COLOR_PATTERN >= 2) {
-      localStorage.color_background_m10 = collection.find('#color_background_m10').first().val();
-      localStorage.color_spocks_m10 = collection.find('#color_spocks_m10').first().val();
+      options.KEY_COLOR_BG_M10 = collection.find('#color_background_m10').first().val();
+      options.KEY_COLOR_SPOCK_M10 = collection.find('#color_spocks_m10').first().val();
     } else {
-      localStorage.color_background_m10 = $('#color_background_m10').val();
-      localStorage.color_spocks_m10 = $('#color_spocks_m10').val();
+      options.KEY_COLOR_BG_M10 = $('#color_background_m10').val();
+      options.KEY_COLOR_SPOCK_M10 = $('#color_spocks_m10').val();
     }
-    options.KEY_COLOR_BG_M10 = parseInt(localStorage.color_background_m10, 16);
-    options.KEY_COLOR_SPOCK_M10 = parseInt(localStorage.color_spocks_m10, 16);
     
-    localStorage.color_background_m1 = $('#color_background_m1').val();
-    localStorage.color_spocks_m1 = $('#color_spocks_m1').val();
-    options.KEY_COLOR_BG_M1 = parseInt(localStorage.color_background_m1, 16);
-    options.KEY_COLOR_SPOCK_M1 = parseInt(localStorage.color_spocks_m1, 16);
+    options.KEY_COLOR_BG_M1 = $('#color_background_m1').val();
+    options.KEY_COLOR_SPOCK_M1 = $('#color_spocks_m1').val();
     
-    localStorage.color_background_bt = $('#color_background_bt').val();
-    localStorage.color_spocks_bt = $('#color_spocks_bt').val();
-    options.KEY_COLOR_BG_BT = parseInt(localStorage.color_background_bt, 16);
-    options.KEY_COLOR_SPOCK_BT = parseInt(localStorage.color_spocks_bt, 16);
-    localStorage.color_background_sec = $('#color_background_sec').val();
-    localStorage.color_spocks_sec = $('#color_spocks_sec').val();
-    options.KEY_COLOR_BG_SEC = parseInt(localStorage.color_background_sec, 16);
-    options.KEY_COLOR_SPOCK_SEC = parseInt(localStorage.color_spocks_sec, 16);
+    options.KEY_COLOR_BG_BT = $('#color_background_bt').val();
+    options.KEY_COLOR_SPOCK_BT = $('#color_spocks_bt').val();
+    
+    options.KEY_COLOR_BG_SEC = $('#color_background_sec').val();
+    options.KEY_COLOR_SPOCK_SEC = $('#color_spocks_sec').val();
   }
 
   console.log('Got options: ' + JSON.stringify(options));

@@ -89,8 +89,8 @@ static bool update_time() {
   int new_sec = -1;
   bool res = false;
   
-  d10 = (time->tm_mday + 1) / 10;
-  d1 = (time->tm_mday + 1) % 10;
+  d10 = time->tm_mday / 10;
+  d1 = time->tm_mday % 10;
   m10 = (time->tm_mon + 1) / 10;
   m1 = (time->tm_mon + 1) % 10;
 
@@ -177,6 +177,12 @@ static void end_shake_y_timer(void *data) {
 
 static void shake_handler(AccelAxisType axis, int32_t direction) {
   switch(axis) {
+  case ACCEL_AXIS_Z:
+    if (direction > 0) {
+      INFO("Z>0");
+    } else {
+      INFO("Z<0");
+    }
   case ACCEL_AXIS_X:
     if(direction > 0) {
       INFO("X>0");
@@ -218,13 +224,6 @@ static void shake_handler(AccelAxisType axis, int32_t direction) {
       }
       layer_mark_dirty(window_get_root_layer(my_window));
       shake_y_timer = app_timer_register(shake_bbs_timer_delay, end_shake_y_timer, NULL);
-    }
-    break;
-  case ACCEL_AXIS_Z:
-    if (direction > 0) {
-      INFO("Z>0");
-    } else {
-      INFO("Z<0");
     }
     break;
   }
@@ -689,7 +688,7 @@ static void load_saved_config(){
   show_zero_for_hours = persist_read_bool_safe(KEY_HOUR_LEAD_ZERO, false);
   
   vibrate_on_hour = persist_read_bool_safe(KEY_VIBRATE_HOUR, false);
-  vibrate_on_bt_disc = persist_read_bool_safe(KEY_VIBRATE_BT_DISC, false);
+  vibrate_on_bt_disc = persist_read_bool_safe(KEY_VIBRATE_BT_DISC, true);
   vibrate_on_bt_conn = persist_read_bool_safe(KEY_VIBRATE_BT_CONN, false);
   
   is_bt_shown = persist_read_bool_safe(KEY_ALW_SHOW_BT, false);
