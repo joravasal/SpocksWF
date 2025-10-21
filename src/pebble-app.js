@@ -80,7 +80,7 @@ Pebble.addEventListener('ready', function(e) {
 
 Pebble.addEventListener("showConfiguration", function(e) {
     //Load the remote config page
-    var url = "https://dl.dropboxusercontent.com/u/3223915/spocks_config/spocksv1.2.html" +
+    var url = "https://www.dropbox.com/scl/fi/mzhg11ka9ovzta1cpa2mm/spocksv1.2.html" +
         '?watch_version=' + getWatchVersion();
     url += "&config_settings=" + encodeURIComponent(JSON.stringify(options));
     console.log("Opening URL: " + url);
